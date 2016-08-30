@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.congwiny.catsdk.api.CatApi;
 import com.congwiny.catsdk.bean.Cat;
+import com.congwiny.myrxjava.wrapper.CatApiWrapper;
 
 import java.util.Collections;
 import java.util.List;
