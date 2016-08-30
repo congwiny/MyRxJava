@@ -1,8 +1,9 @@
-package com.congwiny.myrxjava.api;
+package com.congwiny.catsdk.api;
 
 import android.net.Uri;
 
-import com.congwiny.myrxjava.bean.Cat;
+
+import com.congwiny.catsdk.bean.Cat;
 
 import java.util.List;
 
@@ -28,12 +29,12 @@ public interface CatApi {
         void onStoreFailed(Exception e);
     }
 
-    List<Cat> queryCats2(String query,CatsQueryCallback2 catsQueryCallback);
+    List<Cat> queryCats2(String query, CatsQueryCallback2 catsQueryCallback);
 
-    List<Cat> queryCats1(String query,CatsQueryCallback1 catsQueryCallback);
+    List<Cat> queryCats1(String query, CatsQueryCallback1 catsQueryCallback);
 
     List<Cat> queryCats0(String query);//1
 
     Uri store(Cat cat);
-    Uri store2(Cat cat,StoreCallback2 storeCallback2);
+    Uri store2(Cat cat, StoreCallback2 storeCallback2);
 }

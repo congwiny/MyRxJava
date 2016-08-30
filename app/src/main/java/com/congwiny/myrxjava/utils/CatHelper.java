@@ -2,8 +2,9 @@ package com.congwiny.myrxjava.utils;
 
 import android.net.Uri;
 
-import com.congwiny.myrxjava.api.CatApi;
-import com.congwiny.myrxjava.bean.Cat;
+
+import com.congwiny.catsdk.api.CatApi;
+import com.congwiny.catsdk.bean.Cat;
 
 import java.util.Collections;
 import java.util.List;

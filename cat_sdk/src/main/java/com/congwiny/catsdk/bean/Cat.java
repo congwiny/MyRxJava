@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.bean;
+package com.congwiny.catsdk.bean;
 
 import android.graphics.Bitmap;
 
