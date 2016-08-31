@@ -33,7 +33,7 @@ public class CatHelper2 {
          * 使用map进行转换
          */
 
-        AsyncJob<Cat> cutestCatAsyncJob2 = catsListAsyncJob.map(new Func<List<Cat>, Cat>() {
+        final AsyncJob<Cat> cutestCatAsyncJob2 = catsListAsyncJob.map(new Func<List<Cat>, Cat>() {
             @Override
             public Cat call(List<Cat> cats) {
                 return findCutestCat(cats);
@@ -59,11 +59,21 @@ public class CatHelper2 {
             }
         };
 
+        /**
+         * 使用flapMap转换
+         */
+        AsyncJob<Uri> storedUriAsyncJob2 = cutestCatAsyncJob2.flatMap(new Func<Cat, AsyncJob<Uri>>() {
+            @Override
+            public AsyncJob<Uri> call(Cat cat) {
+                return catApiWrapper.store3(cat);
+            }
+        });
+
         //3.
         AsyncJob<Uri> storedUriAsyncJob = new AsyncJob<Uri>() {
             @Override
             public void start(final Callback<Uri> cutestCatCallback) {
-                cutestCatAsyncJob.start(new Callback<Cat>() {
+                cutestCatAsyncJob2.start(new Callback<Cat>() {
                     @Override
                     public void onResult(Cat cat) {
                         catApiWrapper.store3(cat).start(new Callback<Uri>() {
