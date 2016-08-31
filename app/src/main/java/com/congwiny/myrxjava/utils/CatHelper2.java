@@ -19,13 +19,81 @@ public class CatHelper2 {
     CatApiWrapper catApiWrapper;
 
     /**
-     * 虽然代码量多了，但是看起来更加清晰了。
-     * 嵌套的回调函数没那么多层级了，异步操作的名字也更容易理解了
-     * （catsListAsyncJob, cutestCatAsyncJob, storedUriAsyncJob）。
+     * 模拟RxJava链式版本
+     *
+     * 总结
+     * 通过简单的转换操作，我们可以把异步操作抽象出来。
+     * 这种抽象的结果可以像操作简单的阻塞函数一样来操作异步操作并组合异步操作。
+     * 这样我们就可以摆脱层层嵌套的回调接口了，并且不用手工的去处理每次异步操作的异常。
+     *
      * @param query
      * @return
      */
-    public AsyncJob<Uri> saveTheCutestCat22(final String query){
+    public AsyncJob<Uri> saveTheCutestCat33(final String query) {
+
+        return catApiWrapper.queryCats3(query)
+                .map(new Func<List<Cat>, Cat>() {
+                    @Override
+                    public Cat call(List<Cat> cats) {
+                        return findCutestCat(cats);
+                    }
+                })
+                .flatMap(new Func<Cat, AsyncJob<Uri>>() {
+                    @Override
+                    public AsyncJob<Uri> call(Cat cat) {
+                        return catApiWrapper.store3(cat);
+                    }
+                });
+    }
+
+    /**
+     * 最终的代码 看起来是不是有点眼熟啊？ 再仔细看看。还没发现？
+     * 如果把匿名类修改为 Java 8 的 lambdas 表达式（逻辑是一样的，只是让代码看起来更清晰点）就很容易发现了。
+     * 这个代码和刚刚开头的阻塞式代码是不是非常相似：
+     *
+     * @param query
+     * @return
+     * @see CatHelper#saveTheCutestCat0(String)
+     * <p/>
+     * 现在他们不仅逻辑是一样的，语义上也是一样的。 太棒了！
+     * 异常处理也会传递到最终的回调接口中。
+     */
+    public AsyncJob<Uri> saveTheCutestCat3(final String query) {
+
+        AsyncJob<List<Cat>> catsListAsyncJob3 = catApiWrapper.queryCats3(query);
+
+        /**
+         * 使用map进行转换
+         */
+        final AsyncJob<Cat> cutestCatAsyncJob3 = catsListAsyncJob3.map(new Func<List<Cat>, Cat>() {
+            @Override
+            public Cat call(List<Cat> cats) {
+                return findCutestCat(cats);
+            }
+        });
+
+        /**
+         * 使用flapMap转换
+         */
+        AsyncJob<Uri> storedUriAsyncJob3 = cutestCatAsyncJob3.flatMap(new Func<Cat, AsyncJob<Uri>>() {
+            @Override
+            public AsyncJob<Uri> call(Cat cat) {
+                return catApiWrapper.store3(cat);
+            }
+        });
+        return storedUriAsyncJob3;
+    }
+
+    /**
+     * 虽然代码量多了，但是看起来更加清晰了。
+     * 嵌套的回调函数没那么多层级了，异步操作的名字也更容易理解了
+     * （catsListAsyncJob, cutestCatAsyncJob, storedUriAsyncJob）。
+     *
+     * @param query
+     * @return
+     */
+
+    public AsyncJob<Uri> saveTheCutestCat22(final String query) {
         //1.
         final AsyncJob<List<Cat>> catsListAsyncJob = catApiWrapper.queryCats3(query);
 
@@ -103,6 +171,7 @@ public class CatHelper2 {
     /**
      * 分离参数和回调接口
      * 使用 AsyncJob 来启动每个操作
+     *
      * @param query
      * @return
      */
