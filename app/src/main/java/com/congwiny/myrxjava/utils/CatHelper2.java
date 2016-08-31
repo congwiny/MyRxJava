@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.congwiny.catsdk.bean.Cat;
 import com.congwiny.myrxjava.async.AsyncJob;
+import com.congwiny.myrxjava.map.Func;
 import com.congwiny.myrxjava.wrapper.Callback;
 import com.congwiny.myrxjava.wrapper.CatApiWrapper;
 
@@ -27,6 +28,18 @@ public class CatHelper2 {
     public AsyncJob<Uri> saveTheCutestCat22(final String query){
         //1.
         final AsyncJob<List<Cat>> catsListAsyncJob = catApiWrapper.queryCats3(query);
+
+        /**
+         * 使用map进行转换
+         */
+
+        AsyncJob<Cat> cutestCatAsyncJob2 = catsListAsyncJob.map(new Func<List<Cat>, Cat>() {
+            @Override
+            public Cat call(List<Cat> cats) {
+                return findCutestCat(cats);
+            }
+        });
+
         //2.
         final AsyncJob<Cat> cutestCatAsyncJob = new AsyncJob<Cat>() {
             @Override
