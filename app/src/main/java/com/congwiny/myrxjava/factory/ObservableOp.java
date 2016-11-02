@@ -3,6 +3,7 @@ package com.congwiny.myrxjava.factory;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -10,11 +11,86 @@ import rx.functions.Func0;
 
 /**
  * Created by congwiny on 2016/10/11.
+ * <p>
+ * Observable有很多工厂方法可以创建一个事件流
  */
 
 public class ObservableOp {
 
     public static void main(String[] args) throws Exception {
+
+        /**
+         * Observable.just
+         * just函数创建一个发射预定义好的数据的Observable，发射完这些数据后，事件流也就结束了。
+         */
+        Observable<String> justObservable = Observable.just("one", "two", "three");
+        justObservable.subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("just onComplete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("just onError");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("just onNext" + s);
+            }
+        });
+
+        /**
+         * empty
+         * 这个函数创建的 Observable 只发射一个 onCompleted 事件就结束了。
+         */
+
+        Observable<String> emptyObservable = Observable.empty();
+        emptyObservable.subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("empty onComplete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("empty onError");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("empty onComplete");
+            }
+        });
+
+        /**
+         * never
+         * 这个 Observable 将不会发射任何事件和数据。
+         */
+        Observable<String> neverObservable = Observable.never();
+        neverObservable.subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("never onComplete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("never onError");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("never onComplete");
+            }
+        });
+
+
+        /**
+         * error
+         * 这个 Observable 将会发射一个 error 事件，然后结束。
+         */
         Observable<String> values = Observable.error(new Exception("Oops"));
         Subscription subscription = values.subscribe(
                 new Action1<String>() {
@@ -165,7 +241,7 @@ public class ObservableOp {
          *
          * @deprecated use {@link #interval(long, long, TimeUnit)} instead
          */
-        Observable<Long> values4 = Observable.timer(2000,1000,TimeUnit.MILLISECONDS);
+        Observable<Long> values4 = Observable.timer(2000, 1000, TimeUnit.MILLISECONDS);
 
         values4.subscribe(
                 new Action1<Long>() {
