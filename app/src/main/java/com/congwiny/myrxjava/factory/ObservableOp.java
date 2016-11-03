@@ -1,5 +1,7 @@
 package com.congwiny.myrxjava.factory;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -263,6 +265,62 @@ public class ObservableOp {
                     }
                 }
         );
+
+        /**
+         *Observable.from
+         * 在 Java 并发框架中经常使用 Future 来获取异步结果。
+         * 通过使用 from 可以把 Future 的结果发射到 Observable 中：
+         *
+         * 当 FutureTask 执行完后， Observable 发射 Future 获取到的结果然后结束。
+         * 如果任务 取消了，则 Observable 会发射一个 java.util.concurrent.CancellationException 错误信息。
+         *
+         * 当过了超时时间后， Future 还是没有返回结果， Observable 可以忽略其结果并发射一个 TimeoutException。
+         */
+        FutureTask<Integer> futureTask = new FutureTask<Integer>(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                Thread.sleep(2000);
+                return 21;
+            }
+        });
+        //执行
+        new Thread(futureTask).start();
+        Observable<Integer> futureValues = Observable.from(futureTask,3000,TimeUnit.MILLISECONDS);
+        //订阅
+        futureValues.subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                System.out.print("future onNext = "+integer);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                System.out.print("future onError = "+throwable);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                System.out.print("future onComplete");
+            }
+        });
+
+        /**
+         * Observable.create
+         *  对Observable和Subject。。。下面有段话不太理解，以后去看看吧
+         *
+         * 当有 Subscriber 订阅到这个 Observable 时（上面示例中的 values ），这个 Subscriber 对象就是你实现的函数中的参数 Subscriber。
+         * 然后你可以在你的代码中把数据发射到这个 subscriber 中。注意，当数据发射完后，你需要手工的调用 onCompleted 来表明发射完成了。
+         如果之前的所有方法都不满足你的要求时，这个函数应当作为你创建自定义 Observable 的最佳方式。
+         其实现方式和 第一部分我们通过 Subject 来发射事件类似，但是有几点非常重要的区别。首先：数据源被封装起来了，并和不相关的代码隔离开了。
+         其次：Subject 有一些不太明显的问题，通过使用 Subject 你自己在管理状态，并且任何访问该 Subject 对象的人都可以往里面发送数据然后改变事件流。
+         还一个主要的区别是执行代码的时机，使用 create 创建的 Observable，当 Observable 创建的时候，你的函数还没有执行，只有当有 Subscriber 订阅的时候才执行。
+         这就意味着每次当有 Subscriber 订阅的时候，该函数就执行一次。和 defer 的功能类似。
+         结果和 ReplaySubject 类似， ReplaySubject 会缓存结果 当有新的 Subscriber 订阅的时候，把缓存的结果在发射给新的 Subscriber。
+         如果要使用 ReplaySubject 来实现和 create 类似的功能，如果 create 中创建数据的函数是阻塞的话，则 ReplaySubject 在创建的时候线程会阻塞住知道 创建函数执行完。
+         如果不想阻塞当前线程的话，则需要手工创建一个线程来初始化数据。其实 Rx 有更加优雅的方式解决这个问题。
+         其实使用 Observable.create 可以实现 前面几个工厂方法的功能。比如 上面的 create 函数的功能和 Observable.just(“hello”) 的功能是一样的。
+
+         */
 
 
     }
