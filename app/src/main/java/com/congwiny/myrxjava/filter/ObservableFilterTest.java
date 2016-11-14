@@ -1,5 +1,7 @@
 package com.congwiny.myrxjava.filter;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -164,8 +166,33 @@ public class ObservableFilterTest {
          *
          *下面两个操作函数依据发射数据的索引来在特定的位置切断数据流，可以从头开始切断也可以从末尾开始切断。
          *  take 从头开始获取前 N 个数据，而 skip 则是从头开始 跳过 N 个数据。
-         *  注意，如果发射的数据比 N 小，则这两个函数都会发射一个 error。
+         *  注意，如果发射的数据比 N 小，则会把发射的数据都发射出来
          */
+
+        /**
+         * result
+         *
+         * take onNext = 1
+         * take onNext = 2
+         * take onNext = 3
+         * take new onCompleted
+         */
+        Observable.just(1,2,3).take(4).subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("take new onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("take new  error"+e);
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                System.out.println("take new onNext = "+ integer);
+            }
+        });
 
         values.take(2).subscribe(new Action1<Integer>() {
             @Override
