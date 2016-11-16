@@ -1,13 +1,12 @@
-package com.congwiny.myrxjava.transformation;
+package com.congwiny.myrxjava.rx6_transformation;
 
-import com.congwiny.myrxjava.aggregation.PrintSubscriber;
+import com.congwiny.myrxjava.rx5_aggregation.PrintSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 import rx.functions.Func2;
 

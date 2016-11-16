@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.inspection;
+package com.congwiny.myrxjava.rx4_inspection;
 
 
 import java.io.Serializable;
@@ -10,6 +10,7 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 
 /**
+ * http://blog.chengyunfeng.com/?p=961
  * Created by congwiny on 2016/11/7.
  * <p>
  * 前面一节介绍了如何过滤掉我们不关心的数据。有时候我们需要了解该数据流中的数据是否符合某一条件。

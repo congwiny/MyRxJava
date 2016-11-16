@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.factory;
+package com.congwiny.myrxjava.rx2_create;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -13,6 +13,7 @@ import rx.functions.Func0;
 
 /**
  * Created by congwiny on 2016/10/11.
+ * http://blog.chengyunfeng.com/?p=959
  * <p>
  * Observable有很多工厂方法可以创建一个事件流
  */

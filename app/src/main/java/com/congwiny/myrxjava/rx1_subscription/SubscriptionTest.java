@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.subscription;
+package com.congwiny.myrxjava.rx1_subscription;
 
 import rx.Subscription;
 import rx.functions.Action0;
@@ -9,6 +9,7 @@ import rx.subscriptions.Subscriptions;
 
 /**
  * Created by congwiny on 2016/10/31.
+ * http://blog.chengyunfeng.com/?p=954
  * <p>
  * Rx背后的理念是，无法知道时间事件流何时发射数据、也不知道何时结束发射。
  * 但你要控制何时开始和结束接受事件。

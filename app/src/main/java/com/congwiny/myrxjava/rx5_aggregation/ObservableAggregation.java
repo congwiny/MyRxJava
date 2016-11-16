@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.aggregation;
+package com.congwiny.myrxjava.rx5_aggregation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +15,8 @@ import rx.functions.Func2;
 import rx.observables.GroupedObservable;
 
 /**
+ * http://blog.chengyunfeng.com/?p=962
+ *
  * Created by congwiny on 2016/11/8.
  * <p>
  * 前面介绍了如何过滤掉不需要的数据、如何根据各种条件停止发射数据、如何检查数据是否符合某个条件。

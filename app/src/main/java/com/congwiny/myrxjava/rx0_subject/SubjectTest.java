@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.subject;
+package com.congwiny.myrxjava.rx0_subject;
 
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -9,6 +9,7 @@ import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
 
 /**
+ * http://blog.chengyunfeng.com/?p=948
  * Created by congwiny on 2016/9/29.
  */
 

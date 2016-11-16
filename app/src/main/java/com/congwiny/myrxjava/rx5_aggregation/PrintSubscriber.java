@@ -1,4 +1,4 @@
-package com.congwiny.myrxjava.aggregation;
+package com.congwiny.myrxjava.rx5_aggregation;
 
 import rx.Subscriber;
 

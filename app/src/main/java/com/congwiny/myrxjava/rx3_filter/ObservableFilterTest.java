@@ -1,6 +1,4 @@
-package com.congwiny.myrxjava.filter;
-
-import android.util.Log;
+package com.congwiny.myrxjava.rx3_filter;
 
 import java.util.concurrent.TimeUnit;
 
